@@ -90,7 +90,7 @@ int main (int argc, char** argv)
 	glutInitWindowPosition(0, 0); 
 	
 	// Giving name to window 
-	glutCreateWindow("Harpocrates");
+	glutCreateWindow("Apollo");
 	createBackground();
 
 	glutKeyboardFunc(keyPressed);
