@@ -4,11 +4,23 @@
 #include<math.h> 
 #define pi 3.142857 
 
+
+float convertColorToFloat(float number) {
+	float numberReturn = number / 255;
+	return numberReturn;
+}
+
 void myInit (void) 
-{ 
-	glClearColor(0.584, 0.647, 0.651, 0.0); // Set background color RGB with fourth being alpha
+{
+	// Color for UI Background 
+	float red = convertColorToFloat(149);
+	float green = convertColorToFloat(165);
+	float blue = convertColorToFloat(166);
+	float alpha = 0.0;
+
+	glClearColor(red, green, blue, alpha); // Set background color RGB with fourth being alpha
 	
-	glColor3f(0.0, 0.0, 1.0); // R(0.0.), G(0.0), B(1.0) 
+	glColor3f(0.0, 0.0, 1.0); // R(0.0.), G(0.0), B(1.0) ring color in this instance
 	
 	// breadth of picture boundary is 1 pixel 
 	glPointSize(1.0); 
