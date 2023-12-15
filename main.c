@@ -1,4 +1,5 @@
 // OpenGL
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h> 
 #include <GL/glut.h> 
@@ -6,6 +7,68 @@
 #include <unistd.h>
 // #include <windows.h>
 #define pi 3.142857
+
+struct Letter {
+	struct Letter *next;
+	struct Letter *prev;
+	char character;
+};
+
+struct List {
+	struct Letter *head;
+	struct Letter *tail;
+	int length;
+};
+
+struct List *list;
+
+struct Letter *createLetter(char character) {
+	struct Letter *letter = malloc(sizeof(struct Letter));
+	if (letter == NULL) {
+		printf("Error malloc for letter\n");
+		exit(-1);
+	}
+
+	letter->character = character;
+	letter->next = NULL;
+	letter->prev = NULL;
+	return letter;
+}
+
+struct List *createList() {
+	struct List *list = malloc(sizeof(struct List));
+	if (list == NULL) {
+		printf("Error malloc for list\n");
+		exit(-1);
+	}
+
+	list->head = NULL;
+	list->tail = NULL;
+	list->length = 0;
+	return list;
+}
+
+void insertNextLetter(struct Letter *letter, struct List *list) {
+	if (list->head == NULL && list->tail == NULL) {
+                list->head = letter;
+                list->tail = letter;
+        } else {
+                list->tail->next = letter; 
+                letter->prev = list->tail;
+                list->tail = letter; 
+        }       
+        list->length++;
+}
+
+void printLetterList(struct List *list) {
+        struct Letter *ptr = list->head;
+        
+        while (ptr != NULL) {
+                printf("(Letter: %c)\n", ptr->character);  
+                ptr = ptr->next;
+        }       
+        printf("\n");
+}
 
 
 float convertColorToFloat(float number) {
@@ -17,7 +80,7 @@ void renderBitmapString(float x, float y, void* font, const char* string) {
     glRasterPos2f(x, y);
     while (*string) {
         glutBitmapCharacter(font, *string);
-        string++;
+	string++;
     }
 }
 
@@ -39,6 +102,32 @@ void displayKeyPress(int ascii) {
     	glFlush(); 
 }
 
+void displayWord(struct List *list) {
+	struct Letter *ptr = list->head;
+	char word[1000] = "";
+	int i = 0;
+	while (ptr != NULL) {
+		char conversion[2] = {ptr->character, '\0'};
+		strcat(word, conversion);
+		// printf("Ptr->character: %c\n", ptr->character);
+		ptr = ptr->next;
+		i++;
+	}
+
+	printf("word: %s\n", word);
+	glClear(GL_COLOR_BUFFER_BIT);
+        glColor3f(1.0, 0.0, 0.0);
+
+	renderBitmapString(-0.5, 0.0, GLUT_BITMAP_TIMES_ROMAN_24, word);
+        glFlush(); 
+}
+
+void addKeyPress(int ascii, struct Letter *letter) {
+        char conversion = (char)ascii;
+	letter = createLetter(conversion);
+	insertNextLetter(letter, list);
+}
+
 // Function to draw the triangle
 void drawTriangle() {
     	glBegin(GL_TRIANGLES);
@@ -54,6 +143,8 @@ void drawTriangle() {
 }
 
 void keyPressed(unsigned char keyClick, int x, int y) {
+	// struct List *list = createList();
+	struct Letter *word = NULL;
 	// 13 is ascii for enter
 	// 27 is ascii for esc
 	if (keyClick == 27) {
@@ -61,9 +152,11 @@ void keyPressed(unsigned char keyClick, int x, int y) {
 		exit(0);
 	} else if (keyClick == 13) {
 		printf("ENTER\n");
-        	drawTriangle(); // Draw the triangle
+        	// drawTriangle(); // Draw the triangle
+		displayWord(list);
 	} else {
-		displayKeyPress(keyClick);
+		addKeyPress(keyClick, word);
+		// printLetterList(list); // debugging
 	}
 }
 
@@ -130,6 +223,8 @@ int main (int argc, char** argv)
 	// Giving name to window 
 	glutCreateWindow("Apollo");
 	createBackground();
+
+	list = createList();
 
 	glutKeyboardFunc(keyPressed);
 	
