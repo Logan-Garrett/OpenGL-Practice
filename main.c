@@ -1,34 +1,28 @@
-// C program to demonstrate 
-// drawing a circle using 
-// OpenGL 
+// OpenGL
 #include<stdio.h> 
 #include<GL/glut.h> 
 #include<math.h> 
 #define pi 3.142857 
 
-// function to initialize 
 void myInit (void) 
 { 
-	// making background color black as first 
-	// 3 arguments all are 0.0 
-	glClearColor(0.0, 0.0, 0.0, 1.0); 
+	glClearColor(0.584, 0.647, 0.651, 0.0); // Set background color RGB with fourth being alpha
 	
-	// making picture color green (in RGB mode), as middle argument is 1.0 
-	glColor3f(0.0, 1.0, 0.0); 
+	glColor3f(0.0, 0.0, 1.0); // R(0.0.), G(0.0), B(1.0) 
 	
 	// breadth of picture boundary is 1 pixel 
 	glPointSize(1.0); 
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
 	
-	// setting window dimension in X- and Y- direction 
+	// setting window dimension in X- and Y- direction
 	gluOrtho2D(-780, 780, -420, 420); 
 } 
 
 void display (void) 
 { 
 	glClear(GL_COLOR_BUFFER_BIT); 
-	glBegin(GL_POINTS); 
+	glBegin(GL_POINTS);
 	float x, y, i; 
 	
 	// iterate y up to 2*pi, i.e., 360 degree 
@@ -42,7 +36,9 @@ void display (void)
 		y = 200 * sin(i); 
 		
 		glVertex2i(x, y); 
-	} 
+	}
+	// Draw circle function above?
+
 	glEnd(); 
 	glFlush(); 
 } 
