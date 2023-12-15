@@ -13,19 +13,29 @@ float convertColorToFloat(float number) {
 	return numberReturn;
 }
 
-void displayCircle(void);
-void display(void);
+// Function to draw the triangle
+void drawTriangle() {
+    	glBegin(GL_TRIANGLES);
+    	glColor3f(1.0, 0.0, 0.0); // Set color to red
+   	
+	// Increase the coordinates to make the triangle bigger
+    	glVertex2f(0.0, 100.0);   // Top vertex
+    	glVertex2f(-100.0, -100.0); // Bottom left vertex
+    	glVertex2f(100.0, -100.0);  // Bottom right vertex
+
+	glEnd();
+    	glFlush(); // Ensure all drawing commands are executed
+}
 
 void keyPressed(unsigned char keyClick, int x, int y) {
 	// 13 is ascii for enter
 	// 27 is ascii for esc
 	if (keyClick == 27) {
 		printf("ESC\n");
+		exit(0);
 	} else if (keyClick == 13) {
 		printf("ENTER\n");
-	} else {
-		glutDisplayFunc(displayCircle); 
-		printf("Tryng to create key display reaction\n");
+        	drawTriangle(); // Draw the triangle
 	}
 }
 
