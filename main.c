@@ -3,6 +3,8 @@
 #include <stdio.h> 
 #include <GL/glut.h> 
 #include <math.h> 
+#include <unistd.h>
+// #include <windows.h>
 #define pi 3.142857
 
 
@@ -11,9 +13,19 @@ float convertColorToFloat(float number) {
 	return numberReturn;
 }
 
+void displayCircle(void);
+void display(void);
+
 void keyPressed(unsigned char keyClick, int x, int y) {
-	if (keyClick == 'p') {
-		printf("It worked\n");
+	// 13 is ascii for enter
+	// 27 is ascii for esc
+	if (keyClick == 27) {
+		printf("ESC\n");
+	} else if (keyClick == 13) {
+		printf("ENTER\n");
+	} else {
+		glutDisplayFunc(displayCircle); 
+		printf("Tryng to create key display reaction\n");
 	}
 }
 
@@ -40,35 +52,33 @@ void createBackground(void) {
 void display(void) { 
 	glClear(GL_COLOR_BUFFER_BIT); 
 	glBegin(GL_POINTS);
-	float x, x2, y, y2, i, j; 
-	
-	// iterate y up to 2*pi, i.e., 360 degree 
-	// with small increment in angle as
-	/*
-	for ( i = 0; i < (2 * pi); i += 0.001) 
-	{ 
-		// 200 is size of object 
-		// circle is defined as x = r*cos(i) and y=r*sin(i) 
-		x = 200 * cos(i); 
-		y = 200 * sin(i); 
-		
-		// Draws the dot/point which can be seen
-		glVertex2i(x, y); 
-	} */
-	for (i = 0; i < 5; i += 0.01) {
-		/* for (j = 0; j < 5; j+= 0.001) {
-			x2 = 200 * j;
-			y2 = 200 * j;
-			glVertex2i(x2, y2);
-		} */
-		x = 10 * i;
-		y = 10 * i;
-		glVertex2i(x, y);
-	}
 
 	glEnd(); 
 	glFlush(); 
 } 
+
+void displayCircle(void) {
+	glClear(GL_COLOR_BUFFER_BIT); 
+        glBegin(GL_POINTS);
+
+	float x, x2, y, y2, i, j; 
+        
+        // iterate y up to 2*pi, i.e., 360 degree 
+        // with small increment in angle as
+        
+        for ( i = 0; i < (2 * pi); i += 0.001) 
+        { 
+                // 200 is size of object 
+                // circle is defined as x = r*cos(i) and y=r*sin(i) 
+                x = 200 * cos(i); 
+                y = 200 * sin(i); 
+                
+                // Draws the dot/point which can be seen
+                glVertex2i(x, y); 
+        } 
+	glEnd(); 
+        glFlush(); 
+}
 
 int main (int argc, char** argv) 
 { 
@@ -86,6 +96,9 @@ int main (int argc, char** argv)
 	glutKeyboardFunc(keyPressed);
 	
 	glutDisplayFunc(display); 
-	glutMainLoop(); 
+	
+	// Loads everything that has been called.
+	// Avoid calling many times supposedly.
+	glutMainLoop();
 } 
 
