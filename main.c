@@ -1,8 +1,9 @@
 // OpenGL
-#include<stdio.h> 
-#include<GL/glut.h> 
-#include<math.h> 
-#define pi 3.142857 
+#include <stdlib.h>
+#include <stdio.h> 
+#include <GL/glut.h> 
+#include <math.h> 
+#define pi 3.142857
 
 
 float convertColorToFloat(float number) {
@@ -10,8 +11,13 @@ float convertColorToFloat(float number) {
 	return numberReturn;
 }
 
-void myInit (void) 
-{
+void keyPressed(unsigned char keyClick, int x, int y) {
+	if (keyClick == 'p') {
+		printf("It worked\n");
+	}
+}
+
+void createBackground(void) {
 	// Color for UI Background 
 	float red = convertColorToFloat(149);
 	float green = convertColorToFloat(165);
@@ -31,25 +37,34 @@ void myInit (void)
 	gluOrtho2D(-780, 780, -420, 420); 
 } 
 
-void display (void) 
-{ 
+void display(void) { 
 	glClear(GL_COLOR_BUFFER_BIT); 
 	glBegin(GL_POINTS);
-	float x, y, i; 
+	float x, x2, y, y2, i, j; 
 	
 	// iterate y up to 2*pi, i.e., 360 degree 
-	// with small increment in angle as 
-	// glVertex2i just draws a point on specified co-ordinate 
+	// with small increment in angle as
+	/*
 	for ( i = 0; i < (2 * pi); i += 0.001) 
 	{ 
-		// let 200 is radius of circle and as, 
-		// circle is defined as x=r*cos(i) and y=r*sin(i) 
+		// 200 is size of object 
+		// circle is defined as x = r*cos(i) and y=r*sin(i) 
 		x = 200 * cos(i); 
 		y = 200 * sin(i); 
 		
+		// Draws the dot/point which can be seen
 		glVertex2i(x, y); 
+	} */
+	for (i = 0; i < 5; i += 0.01) {
+		/* for (j = 0; j < 5; j+= 0.001) {
+			x2 = 200 * j;
+			y2 = 200 * j;
+			glVertex2i(x2, y2);
+		} */
+		x = 10 * i;
+		y = 10 * i;
+		glVertex2i(x, y);
 	}
-	// Draw circle function above?
 
 	glEnd(); 
 	glFlush(); 
@@ -65,8 +80,10 @@ int main (int argc, char** argv)
 	glutInitWindowPosition(0, 0); 
 	
 	// Giving name to window 
-	glutCreateWindow("Circle Drawing"); 
-	myInit(); 
+	glutCreateWindow("Harpocrates");
+	createBackground();
+
+	glutKeyboardFunc(keyPressed);
 	
 	glutDisplayFunc(display); 
 	glutMainLoop(); 
