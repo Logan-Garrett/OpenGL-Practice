@@ -13,6 +13,32 @@ float convertColorToFloat(float number) {
 	return numberReturn;
 }
 
+void renderBitmapString(float x, float y, void* font, const char* string) {
+    glRasterPos2f(x, y);
+    while (*string) {
+        glutBitmapCharacter(font, *string);
+        string++;
+    }
+}
+
+void displayKeyPress(int ascii) {
+
+	glClear(GL_COLOR_BUFFER_BIT);
+
+    	glColor3f(1.0, 0.0, 0.0); // Set text color to red
+
+    	// Example text to be displayed
+	char conversion = (char)ascii;
+	char text[2];  // Create an array to hold the character and null terminator
+	text[0] = conversion; // Assign the converted character to the first element of the array
+	text[1] = '\0'; // Null-terminate the string
+
+    	// Set the position and font for the text
+    	renderBitmapString(-0.5, 0.0, GLUT_BITMAP_TIMES_ROMAN_24, text);
+
+    	glFlush(); 
+}
+
 // Function to draw the triangle
 void drawTriangle() {
     	glBegin(GL_TRIANGLES);
@@ -36,6 +62,8 @@ void keyPressed(unsigned char keyClick, int x, int y) {
 	} else if (keyClick == 13) {
 		printf("ENTER\n");
         	drawTriangle(); // Draw the triangle
+	} else {
+		displayKeyPress(keyClick);
 	}
 }
 
@@ -71,7 +99,7 @@ void displayCircle(void) {
 	glClear(GL_COLOR_BUFFER_BIT); 
         glBegin(GL_POINTS);
 
-	float x, x2, y, y2, i, j; 
+	float x, y, i; 
         
         // iterate y up to 2*pi, i.e., 360 degree 
         // with small increment in angle as
