@@ -1,2 +1,2 @@
-# Apollo
-Encoder.
+# OpenGL Practice
+OpenGL Practice
